@@ -1,1 +1,15 @@
+server:
+  port: 8084
+spring:
+  application:
+    name: client‐ribbon
+eureka:
+  client:
+    serviceUrl:
+      #服务注册地址
+      defaultZone: http://localhost:8080/eureka/
+feign:
+  hystrix:
+    enabled: true
+
 
