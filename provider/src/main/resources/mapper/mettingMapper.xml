@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jk.dao.MeetingDao">
+    <select id="domesticnum" resultType="int">
+        select count(1) from t_meeting where meetingtype=1
+    </select>
+
+    <select id="initdomestic" resultType="com.jk.pojo.MeetingBean">
+        select * from t_meeting where meetingtype=1 limit #{open},#{rows}
+    </select>
+
+    <select id="abroadnum" resultType="int">
+        select count(1) from t_meeting where meetingtype=2
+    </select>
+
+    <select id="initabroad" resultType="com.jk.pojo.MeetingBean">
+        select * from t_meeting where meetingtype=2 limit #{open},#{rows}
+    </select>
+
+    <select id="findMeetingById" resultType="com.jk.pojo.MeetingBean">
+        select * from t_meeting where meetingid=#{id}
+    </select>
+
+    <delete id="delMeeting">
+        delete from t_meeting where meetingid=#{id}
+    </delete>
+
+    <insert id="addMeeting">
+        insert into t_meeting (meetingname,meetingaddress,units,meetingstatus,productid,meetingtype,attend,accompany,remarks,opendate,enddate) values(#{meetingname},#{meetingaddress},#{units},1,#{productid},#{meetingtype},#{attend},#{accompany},#{remarks},#{opendate},#{enddate})
+    </insert>
+</mapper>

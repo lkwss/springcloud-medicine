@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap3/css/bootstrap.css">
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap3/css/bootstrap-theme.css">
+
+    <!-- 引入jquery文件 -->
+    <script type="text/javascript" src="../js/bootstrap/jquery.min.js"></script>
+    <!-- 引入bootstrap的js文件 -->
+    <script type="text/javascript" src="../js/bootstrap/bootstrap3/js/bootstrap.min.js"></script>
+
+    <!-- 引入表格的CSS和JS文件 -->
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap-table/bootstrap-table.css">
+    <script src="../js/bootstrap/bootstrap-table/bootstrap-table.js"></script>
+    <script src="../js/bootstrap/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+
+    <!-- 引入弹框的js文件 -->
+    <script src="../js/bootstrap/bootstrap-bootbox/bootbox.js"></script>
+
+    <!-- 引入日期得css和js文件 -->
+    <script src="../js/bootstrap/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+    <script src="../js/bootstrap/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css">
+    <!-- 引入上传文件的css和js文件 -->
+    <script src="../js/bootstrap/bootstrap-fileinput/js/fileinput.js"></script>
+    <script src="../js/bootstrap/bootstrap-fileinput/js/locales/zh.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap-fileinput/css/fileinput.css">
+</head>
+<style type="text/css">
+    .div1{
+        background-color: gainsboro;
+        width: 90%;
+        height: 40px;
+        text-align: left;
+        padding-top: 7px;
+        padding-left: 20px;
+    }
+</style>
+<body>
+    <h3>国际会议</h3>
+    <center>
+        <div class="div1">
+            <font style="font-size: 20px">筛选</font>
+        </div>
+        <div style="width: 90%;height: 80px;border: 1px solid gainsboro;padding-top: 20px">
+            <form class="form-inline">
+                <div class="form-group">
+                    <input type="text" class="form-control date" id="rq" placeholder="请输入会议日期">
+
+                    <input type="text" class="form-control" id="dd" placeholder="请输入会议地点">
+
+                    <select class="form-control" id="type">
+                        <option value="-1">请选择会议状态</option>
+                        <option value="1">未开始</option>
+                        <option value="2">进行中</option>
+                        <option value="3">已结束</option>
+                    </select>
+
+                    <input type="text" class="form-control" id="gjz" placeholder="请输入关键字">
+                    <button type="button" onclick="cha()" class="btn btn-success glyphicon glyphicon-search">搜索</button>
+                </div>
+            </form>
+        </div>
+    </center>
+    <center>
+        <div style="width: 90%;height: 60px;background-color: gainsboro;text-align: left;margin-top: 60px;padding-left: 20px;padding-top: 7px">
+            <div class="form-group">
+                <font style="font-size: 35px">会议列表</font>
+                <button type="button" onclick="openadd()" class="btn btn-success" style="margin-bottom: 10px;margin-left: 30px">新增</button>
+            </div>
+        </div>
+    </center>
+    <table id="mytable"></table>
+</body>
+<script type="text/javascript">
+    $(function () {
+        inittable()
+    })
+    function inittable() {
+        $("#mytable").bootstrapTable({
+            url: "/meeting/initdomestic",
+            columns: [
+                {field: "meetingname", title: "会议名称"},
+                {field: "meetingaddress", title: "会议地点"},
+                {
+                    field: "ss", title: "会议日期", formatter: function (value, row, index) {
+                        var str = "";
+                        str += row.opendate + "-" + row.enddate;
+                        return str;
+                    }
+                },
+                {
+                    field: "meetingstatus", title: "会议状态", formatter: function (value, row, index) {
+                        return value == 1 ? "未开始" : value == 2 ? "进行中" : "已结束"
+                    }
+                },
+                {field: "productname", title: "产品组"},
+                {field: "cz", title: "来源"}
+            ],
+            pagination:true,
+            pageSize:5,
+            pageList:[5,10,15,20],
+            pageNumber:1,
+            sidePagination:'server',
+            queryParams:function(){
+                return {
+                    page:this.pageNumber,//第几页
+                    rows:this.pageSize,//每页条数x
+                    meetingtype:1
+                };
+            }
+        })
+    }
+    $('.date').datetimepicker({
+        language: 'zh-CN',//显示中文
+        //format: 'yyyy-mm-dd hh:ii:ss',//显示格式
+        format: 'yyyy-mm-dd',//显示格式
+        minView: "month",//设置只显示到月份
+        initialDate: new Date(),//初始化当前日期
+        autoclose: true,//选中自动关闭
+        todayBtn: true//显示今日按钮
+    });
+</script>
+</html>
