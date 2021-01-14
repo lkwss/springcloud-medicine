@@ -4,6 +4,7 @@ import com.jk.pojo.MeetingBean;
 import com.jk.service.MeetingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -26,7 +27,7 @@ public class MeetingController {
      **/
     @RequestMapping("initdomestic")
     @ResponseBody
-    public HashMap<String,Object> initdomestic(Integer page, Integer rows, MeetingBean meetingBean){
+    public HashMap<String,Object> initdomestic(Integer page, Integer rows, @RequestBody MeetingBean meetingBean){
         return meetingService.initdomestic(page,rows,meetingBean);
     }
     /**
@@ -40,7 +41,7 @@ public class MeetingController {
      **/
     @RequestMapping("initabroad")
     @ResponseBody
-    public HashMap<String,Object> initabroad(Integer page, Integer rows, MeetingBean meetingBean){
+    public HashMap<String,Object> initabroad(Integer page, Integer rows,@RequestBody MeetingBean meetingBean){
         return meetingService.initabroad(page,rows,meetingBean);
     }
     /**
@@ -77,7 +78,7 @@ public class MeetingController {
      **/
     @RequestMapping("addMeeting")
     @ResponseBody
-    public void addMeeting(MeetingBean meetingBean){
+    public void addMeeting(@RequestBody MeetingBean meetingBean){
         meetingService.addMeeting(meetingBean);
     }
 }

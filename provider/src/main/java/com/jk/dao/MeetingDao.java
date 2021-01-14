@@ -10,11 +10,11 @@ import java.util.List;
 @Mapper
 @Repository
 public interface MeetingDao {
-    int domesticnum(MeetingBean meetingBean);
+    int domesticnum(@Param("meet")MeetingBean meetingBean);
 
     List<MeetingBean> initdomestic(@Param("open") int open, @Param("rows")Integer rows, @Param("meet")MeetingBean meetingBean);
 
-    int abroadnum(MeetingBean meetingBean);
+    int abroadnum(@Param("meet") MeetingBean meetingBean);
 
     List<MeetingBean> initabroad(@Param("open")int open,@Param("rows") Integer rows, @Param("meet")MeetingBean meetingBean);
 

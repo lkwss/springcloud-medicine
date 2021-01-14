@@ -47,7 +47,7 @@
         <div style="width: 90%;height: 80px;border: 1px solid gainsboro;padding-top: 20px">
             <form class="form-inline">
                 <div class="form-group">
-                    <input type="text" class="form-control date" id="rq" placeholder="请输入会议日期">
+                    <input type="text" class="form-control date" id="rq" placeholder="请输入会议开始日期">
 
                     <input type="text" class="form-control" id="dd" placeholder="请输入会议地点">
 
@@ -82,6 +82,42 @@
     $(function () {
         inittable()
     })
+    function delmeeting(id) {
+        bootbox.confirm({
+            size: "small",
+            title:"提示",
+            message: "是否确认删除?",
+            buttons: {
+                confirm: {
+                    label: '确定',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: '取消',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function(result){
+                if(result){
+                    $.ajax({
+                        url:"/meeting/delMeeting",
+                        data:{id:id},
+                        success:function(){
+                            //alert("删除成功！！！");
+                            bootbox.alert({
+                                size: "small",
+                                title: "提示",
+                                message: "删除成功！！！",
+                                callback: function(){}
+                            });
+                            //刷新表格：如果有条查直接调用条查的方法，没有条查自己写【refresh】方法
+                            $("#mytable").bootstrapTable("refresh")
+                        }
+                    });
+                }
+            }
+        })
+    }
     function inittable() {
         $("#mytable").bootstrapTable({
             url: "/meeting/initdomestic",
@@ -91,7 +127,7 @@
                 {
                     field: "ss", title: "会议日期", formatter: function (value, row, index) {
                         var str = "";
-                        str += row.opendate + "-" + row.enddate;
+                        str += row.opendate + "至" + row.enddate;
                         return str;
                     }
                 },
@@ -101,7 +137,16 @@
                     }
                 },
                 {field: "productname", title: "产品组"},
-                {field: "cz", title: "操作"}
+                {field: "cz", title: "操作", formatter: function (value, row, index) {
+                    var str="";
+                    str +="<a>查看详情</a> |"
+                    str +="<a>修改</a> |"
+                    str +="<a onclick='delmeeting("+row.meetingid+")'>删除</a> |"
+                    str +="<a>分配名额</a> |"
+                    str +="<a>修改名额</a> |"
+                    str +="<a>审批名单</a> |"
+                        return str;
+                }}
             ],
             pagination:true,
             pageSize:5,
@@ -112,7 +157,11 @@
                 return {
                     page:this.pageNumber,//第几页
                     rows:this.pageSize,//每页条数x
-                    meetingtype:1
+                    meetingtype:1,
+                    opendate:$("#rq").val(),
+                    meetingaddress:$("#dd").val(),
+                    meetingstatus:$("#type").val(),
+                    productname:$("#gjz").val()
                 };
             }
         })
