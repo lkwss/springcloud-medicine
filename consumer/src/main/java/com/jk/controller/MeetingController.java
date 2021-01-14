@@ -1,7 +1,7 @@
 package com.jk.controller;
 
 import com.jk.pojo.MeetingBean;
-import com.jk.staffservice.MeetingService;
+import com.jk.staffservice.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +13,7 @@ import java.util.HashMap;
 @RequestMapping("/meeting")
 public class MeetingController {
     @Autowired
-    private MeetingService meetingService;
+    private StaffService meetingService;
     /**
      * @Author: lkw
      * @Description:查询国内会议

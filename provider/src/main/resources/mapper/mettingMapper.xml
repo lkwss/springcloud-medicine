@@ -28,4 +28,8 @@
     <insert id="addMeeting">
         insert into t_meeting (meetingname,meetingaddress,units,meetingstatus,productid,meetingtype,attend,accompany,remarks,opendate,enddate) values(#{meetingname},#{meetingaddress},#{units},1,#{productid},#{meetingtype},#{attend},#{accompany},#{remarks},#{opendate},#{enddate})
     </insert>
+
+    <update id="updMeeting">
+        update t_meeting set meetingname=#{meetingname},meetingaddress=#{meetingaddress},units=#{units},productid=#{productid},meetingtype=#{meetingtype},attend=#{attend},accompany=#{accompany},remarks=#{remarks},opendate=#{opendate},enddate=#{enddate} where meetingid=#{id}
+    </update>
 </mapper>
