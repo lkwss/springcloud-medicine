@@ -1,6 +1,7 @@
 package com.jk.staffservice;
 
 import com.jk.pojo.MeetingBean;
+import com.jk.pojo.ProductBean;
 import com.jk.pojo.TreeBean;
 import org.springframework.stereotype.Component;
 
@@ -36,5 +37,10 @@ public class StaffServiceFallBack implements StaffService {
     @Override
     public void addMeeting(MeetingBean meetingBean) {
 
+    }
+
+    @Override
+    public List<ProductBean> initproduct() {
+        return null;
     }
 }

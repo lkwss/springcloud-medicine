@@ -1,6 +1,7 @@
 package com.jk.staffservice;
 
 import com.jk.pojo.MeetingBean;
+import com.jk.pojo.ProductBean;
 import com.jk.pojo.TreeBean;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,4 +27,6 @@ public interface StaffService {
     void delMeeting(@RequestParam(value = "id")Integer id);
     @RequestMapping("meeting/addMeeting")
     void addMeeting(@RequestBody MeetingBean meetingBean);
+    @RequestMapping("meeting/initproduct")
+    List<ProductBean> initproduct();
 }

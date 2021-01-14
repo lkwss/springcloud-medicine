@@ -1,6 +1,7 @@
 package com.jk.dao;
 
 import com.jk.pojo.MeetingBean;
+import com.jk.pojo.ProductBean;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -25,4 +26,6 @@ public interface MeetingDao {
     void addMeeting(MeetingBean meetingBean);
 
     void updMeeting(MeetingBean meetingBean);
+
+    List<ProductBean> initproduct();
 }

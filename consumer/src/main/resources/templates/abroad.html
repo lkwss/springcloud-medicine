@@ -35,54 +35,54 @@
     }
 </style>
 <body>
-    <h3>国内会议</h3>
-    <center>
-        <div class="div1">
-            <font style="font-size: 20px">筛选</font>
-        </div>
-        <div style="width: 90%;height: 80px;border: 1px solid gainsboro;padding-top: 20px">
-            <form class="form-inline">
-                <div class="form-group">
-                    <input type="text" class="form-control date" id="rq" placeholder="请输入会议开始日期">
-
-                    <input type="text" class="form-control" id="dd" placeholder="请输入会议地点">
-
-                    <select class="form-control" id="type">
-                        <option value="-1">请选择会议状态</option>
-                        <option value="1">未开始</option>
-                        <option value="2">进行中</option>
-                        <option value="3">已结束</option>
-                    </select>
-
-                    <input type="text" class="form-control" id="gjz" placeholder="请输入关键字">
-                    <button type="button" onclick="cha()" class="btn btn-success glyphicon glyphicon-search">搜索</button>
-                </div>
-            </form>
-        </div>
-    </center>
-    <center>
-        <div style="width: 90%;height: 60px;background-color: gainsboro;text-align: left;margin-top: 60px;padding-left: 20px;padding-top: 7px">
+<h3>国际会议</h3>
+<center>
+    <div class="div1">
+        <font style="font-size: 20px">筛选</font>
+    </div>
+    <div style="width: 90%;height: 80px;border: 1px solid gainsboro;padding-top: 20px">
+        <form class="form-inline">
             <div class="form-group">
-                <font style="font-size: 35px">会议列表</font>
-                <button type="button" onclick="openadd()" style="width: 240px;margin-bottom: 10px;margin-left: 30px" class="btn btn-primary">新增</button>
+                <input type="text" class="form-control date" id="rq" placeholder="请输入会议开始日期">
+
+                <input type="text" class="form-control" id="dd" placeholder="请输入会议地点">
+
+                <select class="form-control" id="type">
+                    <option value="-1">请选择会议状态</option>
+                    <option value="1">未开始</option>
+                    <option value="2">进行中</option>
+                    <option value="3">已结束</option>
+                </select>
+
+                <input type="text" class="form-control" id="gjz" placeholder="请输入关键字">
+                <button type="button" onclick="cha()" class="btn btn-success glyphicon glyphicon-search">搜索</button>
             </div>
+        </form>
+    </div>
+</center>
+<center>
+    <div style="width: 90%;height: 60px;background-color: gainsboro;text-align: left;margin-top: 60px;padding-left: 20px;padding-top: 7px">
+        <div class="form-group">
+            <font style="font-size: 35px">会议列表</font>
+            <button type="button" onclick="openadd()" style="width: 240px;margin-bottom: 10px;margin-left: 30px" class="btn btn-primary">新增</button>
         </div>
-    </center>
-    <center>
-        <div style="width: 90%">
-            <table id="mytable"></table>
-        </div>
-    </center>
+    </div>
+</center>
+<center>
+    <div style="width: 90%">
+        <table id="mytable"></table>
+    </div>
+</center>
 </body>
 <script type="text/javascript">
     $(function () {
         inittable()
     })
     function openadd() {
-        location.href="/page/toadd"
+        location.href="/page/toaddmeeting"
     }
     function updMeeting(id) {
-        location.href="/page/toadd?id="+id;
+        location.href="/page/toaddmeeting?id="+id;
     }
     function cha() {
         $("#mytable").bootstrapTable("refresh")
@@ -143,15 +143,15 @@
                 },
                 {field: "productname", title: "产品组"},
                 {field: "cz", title: "操作", formatter: function (value, row, index) {
-                    var str="";
-                    str +="<a>查看详情</a> |"
-                    str +="<a onclick='updMeeting("+row.meetingid+")'>修改</a> |"
-                    str +="<a onclick='delmeeting("+row.meetingid+")'>删除</a> |"
-                    str +="<a>分配名额</a> |"
-                    str +="<a>修改名额</a> |"
-                    str +="<a>审批名单</a> |"
+                        var str="";
+                        str +="<a>查看详情</a> |"
+                        str +="<a onclick='updMeeting("+row.meetingid+")'>修改</a> |"
+                        str +="<a onclick='delmeeting("+row.meetingid+")'>删除</a> |"
+                        str +="<a>分配名额</a> |"
+                        str +="<a>修改名额</a> |"
+                        str +="<a>审批名单</a> |"
                         return str;
-                }}
+                    }}
             ],
             pagination:true,
             pageSize:5,
@@ -162,7 +162,7 @@
                 return {
                     page:this.pageNumber,//第几页
                     rows:this.pageSize,//每页条数x
-                    meetingtype:1,
+                    meetingtype:2,
                     opendate:$("#rq").val(),
                     meetingaddress:$("#dd").val(),
                     meetingstatus:$("#type").val(),

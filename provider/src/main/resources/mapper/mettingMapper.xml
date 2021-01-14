@@ -2,20 +2,50 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.jk.dao.MeetingDao">
     <select id="domesticnum" resultType="int">
-        select count(1) from t_meeting a where a.meetingtype=#{meet.meetingtype}
+        select count(*) from t_meeting a left join t_product b on a.productid=b.productid where a.meetingtype=#{meet.meetingtype}<include refid="domestics"/>
     </select>
 
     <select id="initdomestic" resultType="com.jk.pojo.MeetingBean">
-        select a.*,b.productname from t_meeting a left join t_product b on a.productid=b.productid where a.meetingtype=#{meet.meetingtype} limit #{open},#{rows}
+        select a.*,b.productname from t_meeting a left join t_product b on a.productid=b.productid where a.meetingtype=#{meet.meetingtype} <include refid="domestics"/> limit #{open},#{rows}
     </select>
-
+    
+    <sql id="domestics">
+        <if test="meet.opendate!=null and meet.opendate!=''">
+            and a.opendate=#{meet.opendate}
+        </if>
+        <if test="meet.meetingaddress!=null and meet.meetingaddress!=''">
+            and a.meetingaddress=#{meet.meetingaddress}
+        </if>
+        <if test="meet.meetingstatus!=null and meet.meetingstatus!=-1">
+            and a.meetingstatus=#{meet.meetingstatus}
+        </if>
+        <if test="meet.productname!=null and meet.productname!=''">
+            and b.productname like '%${meet.productname}%'
+        </if>
+    </sql>
+    
     <select id="abroadnum" resultType="int">
-        select count(1) from t_meeting a where a.meetingtype=#{meetingtype}
+       select count(*) from t_meeting a left join t_product b on a.productid=b.productid where a.meetingtype=#{meet.meetingtype} <include refid="abroad"/>
     </select>
 
     <select id="initabroad" resultType="com.jk.pojo.MeetingBean">
-        select * from t_meeting a left join t_product b on a.productid=b.productid where a.meetingtype=#{meetingtype} limit #{open},#{rows}
+       select a.*,b.productname from t_meeting a left join t_product b on a.productid=b.productid where a.meetingtype=#{meet.meetingtype} <include refid="abroad"/> limit #{open},#{rows}
     </select>
+
+    <sql id="abroad">
+        <if test="meet.opendate!=null and meet.opendate!=''">
+            and a.opendate=#{meet.opendate}
+        </if>
+        <if test="meet.meetingaddress!=null and meet.meetingaddress!=''">
+            and a.meetingaddress=#{meet.meetingaddress}
+        </if>
+        <if test="meet.meetingstatus!=null and meet.meetingstatus!=-1">
+            and a.meetingstatus=#{meet.meetingstatus}
+        </if>
+        <if test="meet.productname!=null and meet.productname!=''">
+            and b.productname like '%${meet.productname}%'
+        </if>
+    </sql>
 
     <select id="findMeetingById" resultType="com.jk.pojo.MeetingBean">
         select * from t_meeting where meetingid=#{id}
@@ -30,6 +60,10 @@
     </insert>
 
     <update id="updMeeting">
-        update t_meeting set meetingname=#{meetingname},meetingaddress=#{meetingaddress},units=#{units},productid=#{productid},meetingtype=#{meetingtype},attend=#{attend},accompany=#{accompany},remarks=#{remarks},opendate=#{opendate},enddate=#{enddate} where meetingid=#{id}
+        update t_meeting set meetingname=#{meetingname},meetingaddress=#{meetingaddress},units=#{units},productid=#{productid},meetingtype=#{meetingtype},attend=#{attend},accompany=#{accompany},remarks=#{remarks},opendate=#{opendate},enddate=#{enddate} where meetingid=#{meetingid}
     </update>
+
+    <select id="initproduct" resultType="com.jk.pojo.ProductBean">
+        select * from t_product
+    </select>
 </mapper>

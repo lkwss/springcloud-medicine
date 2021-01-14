@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap3/css/bootstrap.css">
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap3/css/bootstrap-theme.css">
+
+    <!-- 引入jquery文件 -->
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <!-- 引入bootstrap的js文件 -->
+    <script type="text/javascript" src="../js/bootstrap/bootstrap3/js/bootstrap.min.js"></script>
+
+    <!-- 引入表格的css和js文件 -->
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap-table/bootstrap-table.css">
+    <script src="../js/bootstrap/bootstrap-table/bootstrap-table.js"></script>
+    <script src="../js/bootstrap/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+
+    <!-- 引入弹框的js文件 -->
+    <script src="../js/bootstrap/bootstrap-bootbox/bootbox.js"></script>
+
+    <!-- 引入日期得css和js文件 -->
+    <script src="../js/bootstrap/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+    <script src="../js/bootstrap/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css">
+
+    <!-- 引入上传文件的css和js文件 -->
+    <script src="../js/bootstrap/bootstrap-fileinput/js/fileinput.js"></script>
+    <script src="../js/bootstrap/bootstrap-fileinput/js/locales/zh.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap-fileinput/css/fileinput.css">
+</head>
+<body>
+    <form id="myform" method="post">
+        <input type="hidden" id="meetingid" name="meetingid">
+        <center>
+            <table>
+                <tr>
+                    <td height="50px">会议类型:</td>
+                    <td>
+                        <input type='radio' name='meetingtype' value="1">国际会议
+                        <input type='radio' name='meetingtype' value="2">国内会议
+                    </td>
+                </tr>
+                <tr>
+                    <td height="50px">会议名称:</td>
+                    <td>
+                        <input type='text' name='meetingname' id="meetingname" class='form-control'>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="50px">开始时间:</td>
+                    <td>
+                        <input type='text' name='opendate' id="opendate" class='form-control date'>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="50px">结束时间:</td>
+                    <td>
+                        <input type='text' name='enddate' id="enddate" class='form-control date'>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="50px">会议地址:</td>
+                    <td>
+                        <input type='text' name='meetingaddress' id="meetingaddress" class='form-control'>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="50px">组织单位:</td>
+                    <td>
+                        <input type='text' name='units' id="units" class='form-control'>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="50px">参会名额:</td>
+                    <td>
+                        <input type='text' name='attend' id="attend" class='form-control'>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="50px">陪同名额:</td>
+                    <td>
+                        <input type='text' name='accompany' id="accompany" class='form-control'>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="50px">备注:</td>
+                    <td>
+                        <input type='text' name='remarks' id="remarks" class='form-control'>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="50px">所属项目组:</td>
+                    <td>
+                        <select class="form-control" name="productid" id="productid"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="button" onclick="addMeeting()" style="width: 120px" class="btn btn-success">保存</button>
+                    </td>
+                    <td>
+                        <button type="button" onclick="endmeeting()" style="width: 120px;margin-left: 20px" class="btn btn-danger">取消</button>
+                    </td>
+                </tr>
+            </table>
+        </center>
+        <input type="hidden" th:value="${id}" id="span1">
+    </form>
+</body>
+<script>
+    $(function () {
+        initproduct()
+        findMeetingById()
+    })
+    function findMeetingById() {
+        var aa=$("#span1").val();
+        if(aa==null || aa==""){
+            return
+        }else {
+            $.ajax({
+                url:"/meeting/findMeetingById",
+                type:"get",
+                data:{id:aa},
+                success:function (data) {
+                    $("#meetingid").val(data.meetingid);
+                    $("input[name='meetingtype']").each(function(){
+                        if (data.meetingtype==$(this).val()) {
+                            $(this).prop("checked",true)
+                        }
+                    });
+
+                    $("#meetingname").val(data.meetingname);
+                    $("#opendate").val(data.opendate);
+                    $("#enddate").val(data.enddate);
+                    $("#meetingaddress").val(data.meetingaddress);
+                    $("#units").val(data.units);
+                    $("#attend").val(data.attend);
+                    $("#accompany").val(data.accompany);
+                    $("#remarks").val(data.remarks);
+                    $("#productid").val(data.productid);
+                }
+            })
+        }
+    }
+    function endmeeting() {
+        location.href="/page/tometting"
+    }
+    function addMeeting() {
+        $.ajax({
+            url:'/meeting/addMeeting',//后台请求地址
+            type:'post',
+            data:$("#myform").serialize(),//表单序列化
+            //dataType:'json',
+            success:function(){
+                location.href="/page/tometting"
+            }
+        });
+
+    }
+    function initproduct() {
+        $.ajax({
+            url:'/meeting/initproduct',//后台请求地址
+            type:'get',
+            async:false,
+            success:function(data){
+                //拼接下拉列表的字符串
+                var str = "<option value='-1'>请选择</option>";
+                for(var i=0;i<data.length;i++){
+                    str += "<option value='"+data[i].productid+"'>"+data[i].productname+"</option>";
+                }
+                $("#productid").html(str);
+            }
+        });
+    }
+    $('.date').datetimepicker({
+        language: 'zh-CN',//显示中文
+        //format: 'yyyy-mm-dd hh:ii:ss',//显示格式
+        format: 'yyyy-mm-dd',//显示格式
+        minView: "month",//设置只显示到月份
+        initialDate: new Date(),//初始化当前日期
+        autoclose: true,//选中自动关闭
+        todayBtn: true//显示今日按钮
+    });
+</script>
+</html>

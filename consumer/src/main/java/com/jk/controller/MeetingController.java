@@ -1,6 +1,7 @@
 package com.jk.controller;
 
 import com.jk.pojo.MeetingBean;
+import com.jk.pojo.ProductBean;
 import com.jk.staffservice.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
+import java.util.List;
 
 @Controller
 @RequestMapping("/meeting")
@@ -17,7 +19,7 @@ public class MeetingController {
     private StaffService meetingService;
     /**
      * @Author: lkw
-     * @Description:查询国内会议
+     * @Description:查询国际会议
      * @Date: 2021/1/13 20:27
       * @param page
      * @param rows
@@ -31,7 +33,7 @@ public class MeetingController {
     }
     /**
      * @Author: lkw
-     * @Description:查询国外会议
+     * @Description:查询国内会议
      * @Date: 2021/1/13 20:35
       * @param page
      * @param rows
@@ -79,5 +81,17 @@ public class MeetingController {
     @ResponseBody
     public void addMeeting(MeetingBean meetingBean){
         meetingService.addMeeting(meetingBean);
+    }
+    /**
+     * @Author: lkw
+     * @Description:动态加载项目组信息
+     * @Date: 2021/1/14 17:11
+      * @param
+     * @Return: java.util.List<com.jk.pojo.ProductBean>
+     **/
+    @RequestMapping("initproduct")
+    @ResponseBody
+    public List<ProductBean> initproduct(){
+        return meetingService.initproduct();
     }
 }

@@ -2,6 +2,7 @@ package com.jk.service.Impl;
 
 import com.jk.dao.MeetingDao;
 import com.jk.pojo.MeetingBean;
+import com.jk.pojo.ProductBean;
 import com.jk.service.MeetingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,5 +54,10 @@ public class MeetingServiceImpl implements MeetingService {
         }else{
             meetingDao.updMeeting(meetingBean);
         }
+    }
+
+    @Override
+    public List<ProductBean> initproduct() {
+        return meetingDao.initproduct();
     }
 }
